@@ -1,0 +1,19 @@
+@font-face {
+  font-family: labil;
+  src: url(./font/LabilGrotesk-Medium.ttf);
+}
+* {
+  margin: 0;
+  padding: 0;
+}
+body {
+  margin: 0;
+  font-family: labil;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+  background-color: #000000;
+  color: rgb(255, 255, 255);
+}
+code {
+  font-family: source-code-pro, Menlo, Monaco, Consolas, 'Courier New', monospace;
+}
