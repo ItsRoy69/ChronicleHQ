@@ -1,52 +1,50 @@
-import React, { useState, useEffect } from "react";
+import React, { useEffect } from "react";
 import "../styles/text.css";
+import SplitType from "split-type";
+import { gsap } from "gsap";
+import { ScrollTrigger } from "gsap/dist/ScrollTrigger";
+import Lenis from "@studio-freight/lenis";
 
 export const Text = () => {
   const text =
-    "In Chronicle everything is made with Blocks that come with pixel perfect design, interactivity and motion out of the box. Instead of designing from scratch, simply choose the right one from our library of blocks and see the magic unfold.";
-  const words = text.split(" ");
+    "In Chronicle everything is made with Blocks that come with pixel perfect design, interactivity and motion out of the box. Instead of designing from scratch, simply choose the right one from our library of blocks and see the magic unfold";
 
-  const [scrollPosition, setScrollPosition] = useState(0);
+  const lenis = new Lenis();
 
-  const handleScroll = () => {
-    const position = window.scrollY;
-    setScrollPosition(position);
-  };
+  lenis.on("scroll", (e) => {});
+
+  function raf(time) {
+    lenis.raf(time);
+    requestAnimationFrame(raf);
+  }
+
+  requestAnimationFrame(raf);
+
+  gsap.registerPlugin(ScrollTrigger);
 
   useEffect(() => {
-    window.addEventListener("scroll", handleScroll, { passive: true });
+    const splitTypes = document.querySelectorAll(".reveal-type");
 
-    return () => {
-      window.removeEventListener("scroll", handleScroll);
-    };
+    splitTypes.forEach((word) => {
+      const text2 = new SplitType(word, { types: "words" });
+
+      gsap.from(text2.words, {
+        scrollTrigger: {
+          trigger: word,
+          start: "top 60%",
+          end: "bottom 50%",
+          scrub: true,
+          toggleActions: "play play reverse reverse",
+        },
+        opacity: 0.2,
+        stagger: 0.1,
+      });
+    });
   }, []);
 
-  const scrollStep = window.innerHeight / (words.length + 1);
-
-  // Calculate the translateY value based on scroll position
-  const translateY =
-    scrollPosition > words.length * scrollStep
-      ? `translateY(-${(scrollPosition - words.length * scrollStep) / 5}px)`
-      : "translateY(0)";
-
   return (
-    <div className="textbox_container" style={{ transform: translateY }}>
-      <div className="para">
-        {" "}
-        {words.map((word, index) => {
-          const isHighlighted = scrollPosition > index * scrollStep;
-          return (
-            <span
-              key={index}
-              style={{
-                color: `rgba(255, 255, 255, ${isHighlighted ? 1 : 0.2})`,
-              }}
-            >
-              {word}{" "}
-            </span>
-          );
-        })}
-      </div>
+    <div className="textbox_container">
+      <p className="reveal-type">{text}</p>
     </div>
   );
 };

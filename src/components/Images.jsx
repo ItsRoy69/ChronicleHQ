@@ -1,7 +1,41 @@
-import React from "react";
+import React, { useLayoutEffect } from "react";
+import { Stack } from "@mui/material";
+import gsap from "gsap";
 import "../styles/images.css";
 
 const Images = () => {
+  useLayoutEffect(() => {
+    gsap.fromTo(
+      ".scroll-up",
+      {},
+      {
+        transform: "translateY(40px)",
+        scrollTrigger: {
+          trigger: ".scroll-up",
+          start: "top 50%",
+          end: "top top",
+          scrub: 1,
+          toggleActions: "play play reverse reverse",
+        },
+      }
+    );
+
+    gsap.fromTo(
+      ".scroll-down",
+      {},
+      {
+        transform: "translateY(-40px)",
+        scrollTrigger: {
+          trigger: ".scroll-down",
+          start: "top 50%",
+          end: "top top",
+          scrub: 1,
+          toggleActions: "play play reverse reverse",
+        },
+      }
+    );
+  }, []);
+
   return (
     <section className="images_containter">
       <div className="images_head">
@@ -23,11 +57,52 @@ const Images = () => {
         </div>
 
         <div className="images_subtitle">
-          <h1>A new, easy <br />way to create.</h1>
+          <h1>
+            A new, easy <br />
+            way to create.
+          </h1>
         </div>
+      </div>
+      <div className="cardscrollup">
+        <Stack direction={"row"} justifyContent={"space-between"} gap={"14px"}>
+          <div className="scroll-up">
+            <div className="roundedcards" style={{ height: "230px" }} />
+            <div className="roundedcards" style={{ height: "397px" }} />
+          </div>
+          <div
+            className="scroll-down"
+            style={{ marginTop: "100px" }}
+          >
+            <div className="roundedcards" style={{ height: "397px" }} />
+            <div className="roundedcards" style={{ height: "67px" }} />
+          </div>
+          <div
+            className="scroll-up"
+            style={{ marginTop: "300px" }}
+          >
+            <div className="roundedcards" style={{ height: "250px" }} />
+          </div>
+          <div
+            className="scroll-down"
+            style={{ marginTop: "0px" }}
+          >
+            <div className="roundedcards" style={{ height: "67px" }} />
+            <div className="roundedcards" style={{ height: "250px" }} />
+          </div>
+          <div
+            className="scroll-up"
+            style={{ marginTop: "93px" }}
+          >
+            <div className="roundedcards" style={{ height: "397px" }} />
+          </div>
+          <div className="scroll-down">
+            <div className="roundedcards" style={{ height: "397px" }} />
+          </div>
+        </Stack>
       </div>
     </section>
   );
 };
+
 
 export default Images;

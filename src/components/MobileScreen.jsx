@@ -1,9 +1,44 @@
-import React from "react";
+import { useRef } from "react";
 import "../styles/mobilescreen.css";
-import mobilescreen1 from "../assets/mobilescreen1.webp"
-import mobilescreen2 from "../assets/mobilescreen2.webp"
+import { gsap } from "gsap";
 
 const MobileScreen = () => {
+  const cardRef = useRef(null);
+
+  const handleMouseMove = (e) => {
+    const card = cardRef.current;
+    const cardBounds = card.getBoundingClientRect();
+    const cardCenterX = cardBounds.left + cardBounds.width / 2;
+    const cardCenterY = cardBounds.top + cardBounds.height / 2;
+
+    const cursorX = e.clientX;
+    const cursorY = e.clientY;
+
+    const xOffset = (cursorX - cardCenterX) / 10;
+    const yOffset = (cursorY - cardCenterY) / 10;
+
+    const maxXRotation = Math.min(10, Math.max(-10, xOffset));
+    const maxYRotation = Math.min(3, Math.max(-2, yOffset));
+
+    gsap.to(card, {
+      rotationX: -maxYRotation,
+      rotationY: maxXRotation,
+      duration: 0.3,
+      transformOrigin: "center center",
+      transition: "all 0.2s linear 0s",
+    });
+  };
+
+  const handleMouseLeave = () => {
+    gsap.to(cardRef.current, {
+      rotationX: 0,
+      rotationY: 0, 
+      duration: 0.3,
+      transformOrigin: "center center",
+      transition: "all 0.2s linear 0s",
+    });
+  };
+
   return (
     <section className="mobilescreen_container">
       <div className="mobilescreen-card">
@@ -29,10 +64,18 @@ const MobileScreen = () => {
           Quickly browse the summary and dive deeper when needed.
         </div>
       </div>
-      <div className="mobile-screen_right">
-        <img src={mobilescreen1} alt="" className="mobilescreen1" />
-        <img src={mobilescreen2} alt="" className="mobilescreen2" id="back-card1" />
-        <img src={mobilescreen2} alt="" className="mobilescreen3" id="back-card2" />
+      <div
+        className="card-container"
+        onMouseMove={handleMouseMove}
+        onMouseLeave={handleMouseLeave}
+      >
+        <div
+          className="mobilescreen1"
+          ref={cardRef}
+          style={{
+            transform: "rotate(-18deg) translateX(80px) translateY(60px)",
+          }}
+        />
       </div>
     </section>
   );
